@@ -3,6 +3,5 @@ export class User{
     email!: string;
     phone!: string;
     date!: Date;
-    state!: number;
     city!: string;
 }

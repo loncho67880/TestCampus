@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -7,6 +7,8 @@ import { ClienteService } from 'src/app/core/services/ciudades.services';
 import * as _moment from 'moment';
 import { Cities } from 'src/app/core/models/cities';
 import { catchError, debounceTime, delay, filter, map, of, ReplaySubject, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { RegistroService } from 'src/app/core/services/registro.services';
+import { ReCaptcha2Component } from 'ngx-captcha';
 
 const moment = _moment;
 
@@ -37,6 +39,17 @@ export const MY_FORMATS = {
 })
 export class RegistroComponent implements OnInit, OnDestroy {
   
+  public captchaIsLoaded = false;
+  public captchaSuccess = false;
+  public captchaIsExpired = false;
+  public captchaResponse?: string;
+
+  public theme: 'light' | 'dark' = 'light';
+  public size: 'compact' | 'normal' = 'normal';
+  public lang = 'en';
+  public type = 'image';
+  public siteKey = '6Lf9IPojAAAAALhcgZZW4dnjLgeC1_cSnfZQtDtj';
+
   user: User = new User();
   fecha = new FormControl(moment());
 
@@ -53,21 +66,25 @@ export class RegistroComponent implements OnInit, OnDestroy {
     phone: new FormControl(this.user.phone, [
       Validators.required,
       Validators.minLength(4)
-    ])
+    ])/*,
+    recaptcha: new FormControl('', [
+      Validators.required])*/
   });
 
-  citySelected = new FormControl<Cities>(new Cities());
+  citySelected = new FormControl('');
   citySelectedFilter = new FormControl<string>('');
   cityInvalid: boolean = false;
   public listCitys: ReplaySubject<Cities[]> = new ReplaySubject<Cities[]>(1);
   public searching = false;
   minDate = new Date("December 31, 1999 23:15:00");
+  hideRegister = false;
 
   protected cities: Cities[] = [];
 
   protected _onDestroy = new Subject<void>();
 
-  constructor(private clienteService: ClienteService){
+  constructor(private clienteService: ClienteService,
+              private registroService: RegistroService){
 
   }
 
@@ -109,9 +126,12 @@ export class RegistroComponent implements OnInit, OnDestroy {
     if(this.myForm.valid && this.fecha.valid && this.citySelected.valid && this.fecha.value!.toDate() > this.minDate){
       this.user.name = this.myForm.get('name')?.value!;
       this.user.email = this.myForm.get('email')?.value!;
-      this.user.phone = this.myForm.get('phone')?.value!;
+      this.user.phone = "" + this.myForm.get('phone')?.value!;
       this.user.date = this.fecha.value!.toDate();
-      this.user.city = this.citySelected.value!.completed;
+      this.user.city = this.citySelected.value!;
+      this.registroService.Registrar(this.user).subscribe(data=>{
+        this.hideRegister = true;
+      });
     }
   }
 
@@ -134,5 +154,21 @@ export class RegistroComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
+  }
+
+  handleSuccess(data: any) {
+    console.log(data);
+  }
+
+  handleReset(){
+
+  }
+
+  handleExpire(){
+
+  }
+
+  handleLoad(){
+
   }
 }

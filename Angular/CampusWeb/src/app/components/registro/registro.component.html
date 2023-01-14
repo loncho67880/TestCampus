@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!hideRegister">
     <form [formGroup]="myForm" class="form" (ngSubmit)="submitForm()" novalidate>
         <mat-form-field class="form-element" appearance="fill">
             <mat-label>Nombre</mat-label>
@@ -52,5 +52,20 @@
         <div class="form-element">
             <button mat-raised-button color="primary" class="button" type="submit">Enviar</button>
         </div>
+        <!--<ngx-recaptcha2 #captchaElem
+            [siteKey]="siteKey"
+            (reset)="handleReset()"
+            (expire)="handleExpire()"
+            (load)="handleLoad()"
+            (success)="handleSuccess($event)"
+            [useGlobalDomain]="false"
+            formControlName="recaptcha">
+        </ngx-recaptcha2>-->
     </form>
+</div>
+
+<div class="container" *ngIf="hideRegister">
+    <div *ngIf="this.cityInvalid">
+        <small>Registro Exitoso</small>
+    </div>
 </div>

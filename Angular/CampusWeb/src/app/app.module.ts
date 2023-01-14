@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     HttpClientModule,
     MatButtonModule,
     MomentDateModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    NgxCaptchaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

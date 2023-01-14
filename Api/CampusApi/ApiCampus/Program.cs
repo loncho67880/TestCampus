@@ -1,4 +1,7 @@
 using Application.Services;
+using Common.EmailHelper;
+using Common.ReadTemplateHelper;
+using Core.Models;
 using Repositories.Webservices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ICitiesServices, CitiesServices>();
 builder.Services.AddScoped<IWebservicesCities, WebservicesCities>();
+builder.Services.AddScoped<IReadTemplateHelper, ReadTemplateHelper>();
+builder.Services.AddScoped<IEmailHelper, EmailHelper>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 string _policyName = "CorsPolicy";
 

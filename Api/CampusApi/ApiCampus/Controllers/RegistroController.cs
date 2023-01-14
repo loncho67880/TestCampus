@@ -1,5 +1,5 @@
-﻿using Core.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Application.Services;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiCampus.Controllers
@@ -8,10 +8,17 @@ namespace ApiCampus.Controllers
     [ApiController]
     public class RegistroController : ControllerBase
     {
+        private readonly IUserService _userService;
+
+        public RegistroController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] User user)
         {
-
+            _userService.Registrar(user);
             return Ok(user);
         }
     }
