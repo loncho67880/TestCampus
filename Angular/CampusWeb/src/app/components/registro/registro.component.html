@@ -52,15 +52,9 @@
         <div class="form-element">
             <button mat-raised-button color="primary" class="button" type="submit">Enviar</button>
         </div>
-        <!--<ngx-recaptcha2 #captchaElem
-            [siteKey]="siteKey"
-            (reset)="handleReset()"
-            (expire)="handleExpire()"
-            (load)="handleLoad()"
-            (success)="handleSuccess($event)"
-            [useGlobalDomain]="false"
-            formControlName="recaptcha">
-        </ngx-recaptcha2>-->
+        <ngx-recaptcha2 #captchaElem siteKey="6LeWLvojAAAAAHB5O2Y1Wx5qNsGqdeVNLC5jNbji" (success)="handleSuccess($event)" [size]="size"
+            [hl]="lang" [theme]="theme" [type]="type" formControlName="recaptcha">
+        </ngx-recaptcha2>
     </form>
 </div>
 

@@ -6,9 +6,8 @@ import { User } from 'src/app/core/models/user';
 import { ClienteService } from 'src/app/core/services/ciudades.services';
 import * as _moment from 'moment';
 import { Cities } from 'src/app/core/models/cities';
-import { catchError, debounceTime, delay, filter, map, of, ReplaySubject, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { debounceTime, delay, filter, ReplaySubject, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { RegistroService } from 'src/app/core/services/registro.services';
-import { ReCaptcha2Component } from 'ngx-captcha';
 
 const moment = _moment;
 
@@ -47,8 +46,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
   public theme: 'light' | 'dark' = 'light';
   public size: 'compact' | 'normal' = 'normal';
   public lang = 'en';
-  public type = 'image';
-  public siteKey = '6Lf9IPojAAAAALhcgZZW4dnjLgeC1_cSnfZQtDtj';
+  public type: 'image' | 'audio';
 
   user: User = new User();
   fecha = new FormControl(moment());
@@ -66,9 +64,9 @@ export class RegistroComponent implements OnInit, OnDestroy {
     phone: new FormControl(this.user.phone, [
       Validators.required,
       Validators.minLength(4)
-    ])/*,
+    ]),
     recaptcha: new FormControl('', [
-      Validators.required])*/
+      Validators.required])
   });
 
   citySelected = new FormControl('');
@@ -85,7 +83,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
   constructor(private clienteService: ClienteService,
               private registroService: RegistroService){
-
+                this.type = 'image';
   }
 
   ngOnInit(): void {
